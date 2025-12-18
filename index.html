@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThemeVault - Theme Backup Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --bg-dark: #0f0f23;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --text: #fff;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --glow: rgba(139, 92, 246, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .bg-gradient {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at 30% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        .logo span {
+            background: linear-gradient(135deg, var(--primary), #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 20px var(--glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+        }
+
+        .backup-list {
+            margin-top: 1.5rem;
+        }
+
+        .backup-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s;
+        }
+
+        .backup-item:hover {
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .backup-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(139, 92, 246, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        .backup-info {
+            flex: 1;
+        }
+
+        .backup-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .backup-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .backup-status {
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .backup-status.complete {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .backup-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .backup-actions button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .backup-actions button:hover {
+            background: var(--bg-card);
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-gradient"></div>
+    <header>
+        <div class="logo"><i class="fas fa-vault"></i><span>ThemeVault</span></div>
+    </header>
+    <main class="container">
+        <section class="hero">
+            <h1>Theme Backup Manager</h1>
+            <p>Never lose your theme customizations again</p>
+        </section>
+        <div class="action-bar">
+            <button class="btn btn-primary"><i class="fas fa-plus"></i> Create Backup</button>
+            <button class="btn btn-outline"><i class="fas fa-clock"></i> Schedule Backups</button>
+        </div>
+        <div class="stats-row">
+            <div class="stat">
+                <div class="stat-value">12</div>
+                <div class="stat-label">Total Backups</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">3.2 GB</div>
+                <div class="stat-label">Storage Used</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">Daily</div>
+                <div class="stat-label">Auto-Backup</div>
+            </div>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-history" style="color: var(--primary); margin-right: 0.5rem;"></i>Backup History</h3>
+            <div class="backup-list">
+                <div class="backup-item">
+                    <div class="backup-icon"><i class="fas fa-palette"></i></div>
+                    <div class="backup-info">
+                        <div class="backup-name">Dawn Theme - Holiday Update</div>
+                        <div class="backup-meta">Dec 18, 2024 • 245 MB • 156 files</div>
+                    </div>
+                    <span class="backup-status complete">Complete</span>
+                    <div class="backup-actions"><button><i class="fas fa-download"></i> Download</button><button><i
+                                class="fas fa-undo"></i> Restore</button></div>
+                </div>
+                <div class="backup-item">
+                    <div class="backup-icon"><i class="fas fa-palette"></i></div>
+                    <div class="backup-info">
+                        <div class="backup-name">Dawn Theme - Before CSS Changes</div>
+                        <div class="backup-meta">Dec 15, 2024 • 243 MB • 154 files</div>
+                    </div>
+                    <span class="backup-status complete">Complete</span>
+                    <div class="backup-actions"><button><i class="fas fa-download"></i> Download</button><button><i
+                                class="fas fa-undo"></i> Restore</button></div>
+                </div>
+                <div class="backup-item">
+                    <div class="backup-icon"><i class="fas fa-palette"></i></div>
+                    <div class="backup-info">
+                        <div class="backup-name">Dawn Theme - Auto Backup</div>
+                        <div class="backup-meta">Dec 14, 2024 • 240 MB • 152 files</div>
+                    </div>
+                    <span class="backup-status complete">Complete</span>
+                    <div class="backup-actions"><button><i class="fas fa-download"></i> Download</button><button><i
+                                class="fas fa-undo"></i> Restore</button></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>Part of the <a href="#">ShopifyHero Tools</a> suite</p>
+    </footer>
+</body>
+
+</html>
