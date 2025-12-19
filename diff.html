@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diff Viewer - ThemeVault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="api.js"></script>
+    <style>
+        :root {
+            --primary: #a855f7;
+            --bg: #0f0f23;
+            --card: rgba(255, 255, 255, 0.05);
+            --text: #fff;
+            --muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --added: #22c55e;
+            --removed: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 250px;
+            background: rgba(15, 15, 35, 0.95);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--muted);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-link:hover {
+            background: var(--card);
+        }
+
+        .nav-link.active {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--primary);
+        }
+
+        .main {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--card);
+            color: var(--text);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .diff-view {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.85rem;
+            background: #0d0d1a;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: auto;
+            max-height: 500px;
+        }
+
+        .diff-line {
+            padding: 0.25rem 1rem;
+            border-left: 3px solid transparent;
+            display: flex;
+        }
+
+        .diff-line.added {
+            background: rgba(34, 197, 94, 0.1);
+            border-left-color: var(--added);
+        }
+
+        .diff-line.removed {
+            background: rgba(239, 68, 68, 0.1);
+            border-left-color: var(--removed);
+        }
+
+        .diff-line.modified {
+            background: rgba(245, 158, 11, 0.1);
+            border-left-color: #f59e0b;
+        }
+
+        .line-number {
+            color: var(--muted);
+            min-width: 40px;
+            user-select: none;
+        }
+
+        .line-content {
+            flex: 1;
+            white-space: pre-wrap;
+        }
+
+        .stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .stat-badge.added {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--added);
+        }
+
+        .stat-badge.removed {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--removed);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar">
+        <div class="logo"><i class="fas fa-database"></i> ThemeVault</div>
+        <a href="index.html" class="nav-link"><i class="fas fa-palette"></i> Themes</a>
+        <a href="backups.html" class="nav-link"><i class="fas fa-history"></i> Backups</a>
+        <a href="diff.html" class="nav-link active"><i class="fas fa-code-compare"></i> Diff Viewer</a>
+        <a href="settings.html" class="nav-link"><i class="fas fa-cog"></i> Settings</a>
+    </nav>
+
+    <main class="main">
+        <div class="header">
+            <h1 class="title">Visual Diff Viewer</h1>
+            <p style="color: var(--muted); margin-top: 0.25rem;">Compare theme versions side by side</p>
+        </div>
+
+        <div class="card">
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">Theme</label>
+                    <select class="form-select" id="themeSelect" onchange="loadVersions()"></select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Compare Backup</label>
+                    <select class="form-select" id="backupSelect" onchange="showDiff()"></select>
+                </div>
+            </div>
+        </div>
+
+        <div id="diffResults" style="display: none;">
+            <div class="stats">
+                <div class="stat"><span class="stat-badge added" id="addedCount">0 added</span></div>
+                <div class="stat"><span class="stat-badge removed" id="removedCount">0 removed</span></div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3 style="margin-bottom: 1rem;"><i class="fas fa-file-code" style="color: var(--primary);"></i>
+                        Current Version</h3>
+                    <div class="diff-view" id="currentView"></div>
+                </div>
+                <div class="card">
+                    <h3 style="margin-bottom: 1rem;"><i class="fas fa-history" style="color: var(--muted);"></i> Backup
+                        Version</h3>
+                    <div class="diff-view" id="backupView"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function init() {
+            const themes = VaultAPI.themes.getAll();
+            document.getElementById('themeSelect').innerHTML = '<option value="">Select a theme</option>' +
+                themes.map(t => `<option value="${t.id}">${t.name} (v${t.version})</option>`).join('');
+        }
+
+        function loadVersions() {
+            const themeId = document.getElementById('themeSelect').value;
+            if (!themeId) { document.getElementById('diffResults').style.display = 'none'; return; }
+
+            const theme = VaultAPI.themes.getAll().find(t => t.id === themeId);
+            const backups = theme?.backups || [];
+
+            document.getElementById('backupSelect').innerHTML = '<option value="">Select backup</option>' +
+                backups.map(b => `<option value="${b.id}">v${b.version} - ${new Date(b.createdAt).toLocaleString()}</option>`).join('');
+        }
+
+        function showDiff() {
+            const themeId = document.getElementById('themeSelect').value;
+            const backupId = document.getElementById('backupSelect').value;
+            if (!themeId || !backupId) { document.getElementById('diffResults').style.display = 'none'; return; }
+
+            const theme = VaultAPI.themes.getAll().find(t => t.id === themeId);
+            const backup = theme?.backups.find(b => b.id === backupId);
+            if (!theme || !backup) return;
+
+            const changes = VaultAPI.diffs.compare(backup.css, theme.css);
+            const added = changes.filter(c => c.type === 'added').length;
+            const removed = changes.filter(c => c.type === 'removed').length;
+
+            document.getElementById('addedCount').textContent = `${added} added`;
+            document.getElementById('removedCount').textContent = `${removed} removed`;
+
+            // Render views
+            document.getElementById('currentView').innerHTML = renderDiff(theme.css, changes, 'current');
+            document.getElementById('backupView').innerHTML = renderDiff(backup.css, changes, 'backup');
+
+            document.getElementById('diffResults').style.display = 'block';
+        }
+
+        function renderDiff(css, changes, type) {
+            const lines = css.split('\n');
+            return lines.map((line, i) => {
+                const change = changes.find(c => c.line === i + 1);
+                let cls = '';
+                if (change) {
+                    if (type === 'current' && (change.type === 'added' || change.type === 'modified')) cls = 'added';
+                    else if (type === 'backup' && (change.type === 'removed' || change.type === 'modified')) cls = 'removed';
+                }
+                return `<div class="diff-line ${cls}"><span class="line-number">${i + 1}</span><span class="line-content">${escapeHtml(line)}</span></div>`;
+            }).join('');
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
