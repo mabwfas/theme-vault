@@ -10,11 +10,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #8b5cf6;
-            --primary-dark: #7c3aed;
+            --primary: #06b6d4;
+            --primary-dark: #0891b2;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --secondary: #8b5cf6;
             --bg-dark: #0f0f23;
             --bg-card: rgba(255, 255, 255, 0.05);
             --text: #fff;
@@ -38,7 +39,7 @@
         .bg-gradient {
             position: fixed;
             inset: 0;
-            background: radial-gradient(ellipse at 30% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+            background: radial-gradient(ellipse at 30% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 50%);
             z-index: -1;
         }
 
@@ -64,7 +65,7 @@
         }
 
         .logo span {
-            background: linear-gradient(135deg, var(--primary), #a78bfa);
+            background: linear-gradient(135deg, var(--primary), #22d3ee);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -75,60 +76,51 @@
             padding: 2rem;
         }
 
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
+        .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 1.5rem;
-            text-align: center;
+            margin-bottom: 1.5rem;
         }
 
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .action-bar {
+        .card h3 {
+            margin-bottom: 1rem;
             display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card h3 i {
+            color: var(--primary);
         }
 
         .btn {
-            padding: 1rem 2rem;
+            padding: 0.6rem 1.2rem;
             border: none;
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
             transition: all 0.3s;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: #fff;
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
         }
 
         .btn-outline {
@@ -137,431 +129,531 @@
             color: var(--text);
         }
 
-        .main-grid {
+        .stats-row {
             display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 2rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        .card {
+        .stat-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 1.5rem;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
         }
 
-        .card h3 {
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1rem;
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
         }
 
-        .card h3 i {
-            color: var(--primary);
-        }
-
-        .theme-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .theme-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .theme-item:hover {
-            border-color: var(--primary);
-        }
-
-        .theme-item.active {
-            background: rgba(139, 92, 246, 0.1);
-            border-color: var(--primary);
-        }
-
-        .theme-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            background: rgba(139, 92, 246, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-        }
-
-        .theme-info {
-            flex: 1;
-        }
-
-        .theme-name {
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .theme-meta {
-            font-size: 0.75rem;
+        .stat-label {
+            font-size: 0.85rem;
             color: var(--text-muted);
         }
 
-        .backup-list {
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .theme-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .theme-preview {
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .theme-body {
+            padding: 1.25rem;
+        }
+
+        .theme-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .theme-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .theme-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .backup-list {
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .backup-item {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            padding: 1.25rem;
+            justify-content: space-between;
+            padding: 1rem;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border);
-            border-radius: 14px;
-            transition: all 0.3s;
-        }
-
-        .backup-item:hover {
-            border-color: var(--primary);
-            transform: translateX(4px);
-        }
-
-        .backup-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            background: rgba(139, 92, 246, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            color: var(--primary);
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
         }
 
         .backup-info {
-            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .backup-name {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .backup-meta {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .backup-status {
-            padding: 0.35rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        .backup-status.complete {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-        }
-
-        .backup-status.auto {
-            background: rgba(139, 92, 246, 0.2);
+        .backup-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: rgba(6, 182, 212, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--primary);
         }
 
-        .backup-actions {
-            display: flex;
-            gap: 0.5rem;
+        .backup-name {
+            font-weight: 500;
         }
 
-        .action-btn {
-            padding: 0.6rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: transparent;
-            color: var(--text);
-            cursor: pointer;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s;
-        }
-
-        .action-btn:hover {
-            background: var(--bg-card);
-            border-color: var(--primary);
-        }
-
-        .diff-viewer {
-            margin-top: 1.5rem;
-        }
-
-        .diff-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .diff-content {
-            background: #0d0d1a;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            font-family: 'Fira Code', monospace;
+        .backup-meta {
             font-size: 0.8rem;
-            overflow: hidden;
-        }
-
-        .diff-line {
-            padding: 0.5rem 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .diff-line.added {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        .diff-line.removed {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-        }
-
-        .diff-line.unchanged {
             color: var(--text-muted);
-        }
-
-        .line-number {
-            display: inline-block;
-            width: 40px;
-            color: var(--text-muted);
-            opacity: 0.5;
-        }
-
-        .schedule-panel {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .schedule-option {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-        }
-
-        .schedule-option input {
-            accent-color: var(--primary);
         }
 
         .storage-bar {
-            margin-top: 1.5rem;
-        }
-
-        .storage-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.85rem;
-        }
-
-        .storage-track {
-            height: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            margin-top: 1rem;
             overflow: hidden;
         }
 
         .storage-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary), #a78bfa);
-            border-radius: 5px;
-            width: 32%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text);
+        }
+
+        .code-preview {
+            background: #0d0d1a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.8rem;
+            max-height: 200px;
+            overflow: auto;
+            color: #a5f3fc;
+            white-space: pre-wrap;
         }
 
         footer {
             text-align: center;
-            padding: 3rem;
+            padding: 2rem;
             color: var(--text-muted);
-        }
-
-        @media (max-width: 900px) {
-            .stats-row {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
 
 <body>
     <div class="bg-gradient"></div>
-
     <header>
         <div class="logo"><i class="fas fa-vault"></i><span>ThemeVault</span></div>
         <div style="display: flex; gap: 1rem;">
-            <button class="btn btn-outline"><i class="fas fa-cog"></i> Settings</button>
-            <button class="btn btn-primary"><i class="fas fa-plus"></i> Create Backup</button>
+            <button class="btn btn-outline" onclick="importTheme()"><i class="fas fa-upload"></i> Import</button>
+            <button class="btn btn-primary" onclick="showAddModal()"><i class="fas fa-plus"></i> Add Theme</button>
         </div>
     </header>
 
     <main class="container">
         <div class="stats-row">
             <div class="stat-card">
-                <div class="stat-value">12</div>
-                <div class="stat-label">Total Backups</div>
+                <div class="stat-value" id="totalThemes">0</div>
+                <div class="stat-label">Themes</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">3.2 GB</div>
+                <div class="stat-value" id="totalBackups">0</div>
+                <div class="stat-label">Backups</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="storageUsed">0 KB</div>
                 <div class="stat-label">Storage Used</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">Daily</div>
-                <div class="stat-label">Auto-Backup</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">2h ago</div>
+                <div class="stat-value" id="lastBackup">Never</div>
                 <div class="stat-label">Last Backup</div>
             </div>
         </div>
 
-        <div class="main-grid">
-            <div>
-                <div class="card">
-                    <h3><i class="fas fa-palette"></i> Themes</h3>
-                    <div class="theme-list">
-                        <div class="theme-item active">
-                            <div class="theme-icon"><i class="fas fa-sun"></i></div>
-                            <div class="theme-info">
-                                <div class="theme-name">Dawn (Live)</div>
-                                <div class="theme-meta">v10.0 • Modified today</div>
-                            </div>
-                        </div>
-                        <div class="theme-item">
-                            <div class="theme-icon"><i class="fas fa-code"></i></div>
-                            <div class="theme-info">
-                                <div class="theme-name">Dawn (Dev)</div>
-                                <div class="theme-meta">v10.0 • 3 days ago</div>
-                            </div>
-                        </div>
-                        <div class="theme-item">
-                            <div class="theme-icon"><i class="fas fa-archive"></i></div>
-                            <div class="theme-info">
-                                <div class="theme-name">Debut (Archived)</div>
-                                <div class="theme-meta">v8.2 • 2 months ago</div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="card">
+            <h3><i class="fas fa-palette"></i> Your Themes</h3>
+            <div class="theme-grid" id="themeGrid"></div>
+        </div>
 
-                    <div class="schedule-panel">
-                        <h4 style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;"><i
-                                class="fas fa-clock"></i> Auto-Backup</h4>
-                        <div class="schedule-option"><input type="radio" name="schedule" checked><span>Daily at 3:00
-                                AM</span></div>
-                        <div class="schedule-option"><input type="radio" name="schedule"><span>Weekly on Sunday</span>
-                        </div>
-                        <div class="schedule-option"><input type="radio" name="schedule"><span>Before every
-                                publish</span></div>
-                    </div>
-
-                    <div class="storage-bar">
-                        <div class="storage-label"><span>Storage</span><span>3.2 GB / 10 GB</span></div>
-                        <div class="storage-track">
-                            <div class="storage-fill"></div>
-                        </div>
-                    </div>
+        <div class="card">
+            <h3><i class="fas fa-history"></i> Backup History</h3>
+            <div class="backup-list" id="backupList"></div>
+            <div style="margin-top: 1rem;">
+                <div
+                    style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted);">
+                    <span>Storage</span><span id="storagePercent">0%</span>
                 </div>
-            </div>
-
-            <div>
-                <div class="card">
-                    <h3><i class="fas fa-history"></i> Backup History - Dawn</h3>
-                    <div class="backup-list">
-                        <div class="backup-item">
-                            <div class="backup-icon"><i class="fas fa-save"></i></div>
-                            <div class="backup-info">
-                                <div class="backup-name">Holiday Update</div>
-                                <div class="backup-meta">Dec 19, 2024 • 245 MB • 156 files changed</div>
-                            </div>
-                            <span class="backup-status complete"><i class="fas fa-check"></i> Complete</span>
-                            <div class="backup-actions"><button class="action-btn"><i class="fas fa-eye"></i>
-                                    View</button><button class="action-btn"><i class="fas fa-undo"></i>
-                                    Restore</button><button class="action-btn"><i class="fas fa-download"></i></button>
-                            </div>
-                        </div>
-                        <div class="backup-item">
-                            <div class="backup-icon"><i class="fas fa-robot"></i></div>
-                            <div class="backup-info">
-                                <div class="backup-name">Auto Backup</div>
-                                <div class="backup-meta">Dec 18, 2024 • 243 MB • Daily scheduled</div>
-                            </div>
-                            <span class="backup-status auto"><i class="fas fa-clock"></i> Auto</span>
-                            <div class="backup-actions"><button class="action-btn"><i class="fas fa-eye"></i>
-                                    View</button><button class="action-btn"><i class="fas fa-undo"></i>
-                                    Restore</button><button class="action-btn"><i class="fas fa-download"></i></button>
-                            </div>
-                        </div>
-                        <div class="backup-item">
-                            <div class="backup-icon"><i class="fas fa-save"></i></div>
-                            <div class="backup-info">
-                                <div class="backup-name">Before CSS Changes</div>
-                                <div class="backup-meta">Dec 15, 2024 • 240 MB • 23 files changed</div>
-                            </div>
-                            <span class="backup-status complete"><i class="fas fa-check"></i> Complete</span>
-                            <div class="backup-actions"><button class="action-btn"><i class="fas fa-eye"></i>
-                                    View</button><button class="action-btn"><i class="fas fa-undo"></i>
-                                    Restore</button><button class="action-btn"><i class="fas fa-download"></i></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="diff-viewer">
-                        <div class="diff-header">
-                            <h4 style="font-size: 0.9rem;"><i class="fas fa-code-compare"
-                                    style="color: var(--primary); margin-right: 0.5rem;"></i> Changes Preview</h4><span
-                                style="color: var(--text-muted); font-size: 0.85rem;">theme.liquid</span>
-                        </div>
-                        <div class="diff-content">
-                            <div class="diff-line unchanged"><span class="line-number">45</span> &lt;header
-                                class="header"&gt;</div>
-                            <div class="diff-line removed"><span class="line-number">46</span>- &lt;div
-                                class="header-inner"&gt;</div>
-                            <div class="diff-line added"><span class="line-number">46</span>+ &lt;div
-                                class="header-inner header-sticky"&gt;</div>
-                            <div class="diff-line unchanged"><span class="line-number">47</span> {% render 'logo' %}
-                            </div>
-                            <div class="diff-line added"><span class="line-number">48</span>+ {% render
-                                'announcement-bar' %}</div>
-                            <div class="diff-line unchanged"><span class="line-number">49</span> &lt;/div&gt;</div>
-                        </div>
-                    </div>
+                <div class="storage-bar">
+                    <div class="storage-fill" id="storageFill" style="width: 0%;"></div>
                 </div>
             </div>
         </div>
     </main>
 
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 1.5rem;">Add Theme</h3>
+            <div class="form-group"><label>Theme Name</label><input type="text" id="themeName"></div>
+            <div class="form-group"><label>CSS Content</label><textarea id="themeCSS" rows="6"
+                    placeholder="Paste your theme CSS here..."></textarea></div>
+            <div class="form-group"><label>Version</label><input type="text" id="themeVersion" value="1.0.0"></div>
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button class="btn btn-primary" onclick="addTheme()" style="flex: 1;"><i class="fas fa-plus"></i> Add
+                    Theme</button>
+                <button class="btn btn-outline" onclick="hideAddModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="viewModal">
+        <div class="modal-content" style="max-width: 700px;">
+            <h3 style="margin-bottom: 1rem;" id="viewTitle">Theme Code</h3>
+            <div class="code-preview" id="codePreview"></div>
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button class="btn btn-primary" onclick="copyCode()" style="flex: 1;"><i class="fas fa-copy"></i>
+                    Copy</button>
+                <button class="btn btn-outline" onclick="downloadCode()"><i class="fas fa-download"></i>
+                    Download</button>
+                <button class="btn btn-outline" onclick="hideViewModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <footer>
-        <p>Part of the <a href="#">ShopifyHero Tools</a> suite</p>
+        <p>ThemeVault - Secure theme backup manager</p>
     </footer>
+
+    <script>
+        let themes = JSON.parse(localStorage.getItem('themeVaultThemes') || '[]');
+        let backups = JSON.parse(localStorage.getItem('themeVaultBackups') || '[]');
+        let currentCode = '';
+
+        const colors = ['#8b5cf6', '#06b6d4', '#f59e0b', '#10b981', '#ec4899', '#3b82f6'];
+        const icons = ['🎨', '🌙', '☀️', '🌈', '💎', '🔮', '🎭', '✨'];
+
+        function generateId() { return 'theme-' + Date.now(); }
+
+        function getSize(str) {
+            const bytes = new Blob([str]).size;
+            return bytes < 1024 ? bytes + ' B' : (bytes / 1024).toFixed(1) + ' KB';
+        }
+
+        function timeAgo(date) {
+            const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+            if (seconds < 60) return 'Just now';
+            if (seconds < 3600) return Math.floor(seconds / 60) + 'm ago';
+            if (seconds < 86400) return Math.floor(seconds / 3600) + 'h ago';
+            return Math.floor(seconds / 86400) + 'd ago';
+        }
+
+        function renderThemes() {
+            const grid = document.getElementById('themeGrid');
+
+            if (themes.length === 0) {
+                grid.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 3rem; grid-column: 1/-1;">No themes yet. Add your first theme!</div>';
+            } else {
+                grid.innerHTML = themes.map((t, i) => `
+                    <div class="theme-card">
+                        <div class="theme-preview" style="background: linear-gradient(135deg, ${colors[i % colors.length]}, ${colors[(i + 1) % colors.length]});">${t.icon || icons[i % icons.length]}</div>
+                        <div class="theme-body">
+                            <div class="theme-name">${t.name}</div>
+                            <div class="theme-meta">v${t.version} • ${getSize(t.css)} • ${t.backupCount || 0} backup${t.backupCount !== 1 ? 's' : ''}</div>
+                            <div class="theme-actions">
+                                <button class="btn btn-primary btn-sm" onclick="createBackup(${i})"><i class="fas fa-save"></i> Backup</button>
+                                <button class="btn btn-outline btn-sm" onclick="viewTheme(${i})"><i class="fas fa-eye"></i> View</button>
+                                <button class="btn btn-outline btn-sm" onclick="editTheme(${i})"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteTheme(${i})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderBackups();
+            updateStats();
+        }
+
+        function renderBackups() {
+            const list = document.getElementById('backupList');
+
+            if (backups.length === 0) {
+                list.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">No backups yet. Create a backup from your themes!</div>';
+            } else {
+                list.innerHTML = backups.slice(0, 20).map((b, i) => `
+                    <div class="backup-item">
+                        <div class="backup-info">
+                            <div class="backup-icon"><i class="fas fa-archive"></i></div>
+                            <div>
+                                <div class="backup-name">${b.themeName} v${b.version}</div>
+                                <div class="backup-meta">${timeAgo(b.date)} • ${getSize(b.css)}</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-outline btn-sm" onclick="viewBackup(${i})"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-success btn-sm" onclick="restoreBackup(${i})"><i class="fas fa-undo"></i></button>
+                            <button class="btn btn-outline btn-sm" onclick="downloadBackup(${i})"><i class="fas fa-download"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('totalThemes').textContent = themes.length;
+            document.getElementById('totalBackups').textContent = backups.length;
+
+            const totalSize = themes.reduce((sum, t) => sum + new Blob([t.css]).size, 0) + backups.reduce((sum, b) => sum + new Blob([b.css]).size, 0);
+            document.getElementById('storageUsed').textContent = (totalSize / 1024).toFixed(1) + ' KB';
+
+            const lastBackup = backups[0];
+            document.getElementById('lastBackup').textContent = lastBackup ? timeAgo(lastBackup.date) : 'Never';
+
+            // Storage bar (max 5MB for localStorage)
+            const maxStorage = 5 * 1024 * 1024;
+            const percent = Math.min((totalSize / maxStorage) * 100, 100);
+            document.getElementById('storagePercent').textContent = percent.toFixed(1) + '%';
+            document.getElementById('storageFill').style.width = percent + '%';
+        }
+
+        function showAddModal() { document.getElementById('addModal').classList.add('active'); }
+        function hideAddModal() { document.getElementById('addModal').classList.remove('active'); }
+        function hideViewModal() { document.getElementById('viewModal').classList.remove('active'); }
+
+        function addTheme() {
+            const name = document.getElementById('themeName').value.trim();
+            const css = document.getElementById('themeCSS').value;
+            const version = document.getElementById('themeVersion').value || '1.0.0';
+
+            if (!name) { alert('Please enter theme name'); return; }
+
+            themes.push({ id: generateId(), name, css, version, icon: icons[Math.floor(Math.random() * icons.length)], backupCount: 0, createdAt: new Date().toISOString() });
+            saveData();
+            hideAddModal();
+            renderThemes();
+
+            // Clear form
+            document.getElementById('themeName').value = '';
+            document.getElementById('themeCSS').value = '';
+            document.getElementById('themeVersion').value = '1.0.0';
+        }
+
+        function createBackup(index) {
+            const theme = themes[index];
+            backups.unshift({ id: generateId(), themeId: theme.id, themeName: theme.name, version: theme.version, css: theme.css, date: new Date().toISOString() });
+            theme.backupCount = (theme.backupCount || 0) + 1;
+
+            if (backups.length > 50) backups.pop();
+            saveData();
+            renderThemes();
+            alert('Backup created!');
+        }
+
+        function viewTheme(index) {
+            const theme = themes[index];
+            currentCode = theme.css;
+            document.getElementById('viewTitle').textContent = theme.name + ' CSS';
+            document.getElementById('codePreview').textContent = theme.css || '/* No CSS content */';
+            document.getElementById('viewModal').classList.add('active');
+        }
+
+        function viewBackup(index) {
+            const backup = backups[index];
+            currentCode = backup.css;
+            document.getElementById('viewTitle').textContent = backup.themeName + ' (Backup)';
+            document.getElementById('codePreview').textContent = backup.css || '/* No CSS content */';
+            document.getElementById('viewModal').classList.add('active');
+        }
+
+        function editTheme(index) {
+            const theme = themes[index];
+            const newCSS = prompt('Edit CSS:', theme.css);
+            if (newCSS !== null) {
+                theme.css = newCSS;
+                theme.version = incrementVersion(theme.version);
+                saveData();
+                renderThemes();
+            }
+        }
+
+        function incrementVersion(version) {
+            const parts = version.split('.');
+            parts[2] = parseInt(parts[2] || 0) + 1;
+            return parts.join('.');
+        }
+
+        function deleteTheme(index) {
+            if (!confirm('Delete this theme and all its backups?')) return;
+            const themeId = themes[index].id;
+            themes.splice(index, 1);
+            backups = backups.filter(b => b.themeId !== themeId);
+            saveData();
+            renderThemes();
+        }
+
+        function restoreBackup(index) {
+            const backup = backups[index];
+            const theme = themes.find(t => t.id === backup.themeId);
+            if (theme) {
+                theme.css = backup.css;
+                theme.version = backup.version;
+                saveData();
+                renderThemes();
+                alert('Backup restored!');
+            } else {
+                // Theme was deleted, recreate it
+                themes.push({ id: backup.themeId, name: backup.themeName, css: backup.css, version: backup.version, icon: icons[Math.floor(Math.random() * icons.length)], backupCount: 1, createdAt: new Date().toISOString() });
+                saveData();
+                renderThemes();
+                alert('Theme restored from backup!');
+            }
+        }
+
+        function downloadBackup(index) {
+            const backup = backups[index];
+            const blob = new Blob([backup.css], { type: 'text/css' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `${backup.themeName}-v${backup.version}.css`;
+            a.click();
+        }
+
+        function copyCode() {
+            navigator.clipboard.writeText(currentCode);
+            alert('Code copied!');
+        }
+
+        function downloadCode() {
+            const blob = new Blob([currentCode], { type: 'text/css' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'theme.css';
+            a.click();
+        }
+
+        function importTheme() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.css,.json';
+            input.onchange = e => {
+                const reader = new FileReader();
+                reader.onload = event => {
+                    const content = event.target.result;
+                    const name = e.target.files[0].name.replace(/\.(css|json)$/, '');
+
+                    if (e.target.files[0].name.endsWith('.json')) {
+                        try {
+                            const imported = JSON.parse(content);
+                            if (Array.isArray(imported)) {
+                                themes = themes.concat(imported);
+                            } else {
+                                themes.push(imported);
+                            }
+                        } catch { alert('Invalid JSON'); return; }
+                    } else {
+                        themes.push({ id: generateId(), name, css: content, version: '1.0.0', icon: icons[Math.floor(Math.random() * icons.length)], backupCount: 0, createdAt: new Date().toISOString() });
+                    }
+
+                    saveData();
+                    renderThemes();
+                    alert('Theme imported!');
+                };
+                reader.readAsText(e.target.files[0]);
+            };
+            input.click();
+        }
+
+        function saveData() {
+            localStorage.setItem('themeVaultThemes', JSON.stringify(themes));
+            localStorage.setItem('themeVaultBackups', JSON.stringify(backups));
+        }
+
+        // Sample theme
+        if (themes.length === 0) {
+            themes = [{ id: generateId(), name: 'Dawn Theme', css: '/* Dawn Theme */\n:root {\n  --primary: #8b5cf6;\n  --secondary: #06b6d4;\n  --background: #0f0f23;\n}\n\nbody {\n  font-family: "Inter", sans-serif;\n  background: var(--background);\n  color: white;\n}', version: '1.0.0', icon: '🌅', backupCount: 0 }];
+            saveData();
+        }
+
+        renderThemes();
+    </script>
 </body>
 
 </html>
